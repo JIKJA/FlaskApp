@@ -1,0 +1,19 @@
+<html>
+    <head>
+        <title>{{name}}</title>
+        <link rel="stylesheet" href="../static/style.css">
+    </head>
+    <body class="back{{box[0][0]}}">
+        <p>{{text}}</p>
+        <p>Things:</p>
+        {% for thing in box[1].items() %}
+            <p>{{thing[0]}} x{{thing[1]}}</p>
+        {% endfor %}
+        <form action="/boxes/{{name}}" method="POST">
+            <label>Thing name:</label><br>
+            <input type="text" name="name"><br>
+            <input type="submit" value="Submit">
+        </form>
+        <a href="http://127.0.0.1:5000/boxes">See boxes</a>
+    </body>
+</html>

@@ -3,10 +3,10 @@
         <title>{{name}}</title>
         <link rel="stylesheet" href="../static/style.css">
     </head>
-    <body class="back{{box[0][0]}}">
+    <body class="back{{box_color[0]}}">
         <p>{{text}}</p>
         <p>Things:</p>
-        {% for thing in box[1].items() %}
+        {% for thing in box_things.items() %}
             <p>{{thing[0]}} x{{thing[1]}}</p>
         {% endfor %}
         <form action="/boxes/{{name}}" method="POST">

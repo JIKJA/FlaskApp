@@ -6,7 +6,7 @@
     <body class="back{{box_color[0]}}">
         <p>{{text}}</p>
         <p>Things:</p>
-        {% for thing in box_things.items() %}
+        {% for thing in box_things %}
             <p>{{thing[0]}} x{{thing[1]}}</p>
         {% endfor %}
         <form action="/boxes/{{name}}" method="POST">

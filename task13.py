@@ -1,22 +1,39 @@
-from flask import Flask, request, render_template, session, redirect, url_for
+from flask import Flask, request, render_template, session, redirect, url_for, g
 from functools import wraps
 from os import urandom
+#import sqlite3
 
 app = Flask(__name__)
 users = {('Ivan','12345'):"Ivan", ('Boris','54321'):"Boris", ('Alexandr','qwerty'):"Alexandr"}
 colors = ['red', 'green', 'blue', 'yellow', 'magenta']
 boxes = {}
 app.secret_key = urandom(16)
+#DATABASE = '/databases/boxes.db'
 
 
 def login_required(function_to_protect):
     @wraps(function_to_protect)
     def wrapper(*args, **kwargs):
         if 'user_id' in session:
-            return function_to_protect(*args, **kwargs)
+            if session['user_id'] in users.values():
+                return function_to_protect(*args, **kwargs)
+            else:
+                return redirect(url_for('login'))
         else:
             return redirect(url_for('login'))
     return wrapper
+
+# def get_db():
+#     db = getattr(g, '_database', None)
+#     if db is None:
+#         db = g._database = sqlite3.connect(DATABASE)
+#     return db
+
+# @app.teardown_appcontext
+# def close_connection(exception):
+#     db = getattr(g, '_database', None)
+#     if db is not None:
+#         db.close()
 
 #---------------------------------------------------------------------------
 @app.route('/index')
@@ -98,4 +115,11 @@ def login():
             session['user_id'] = users.get((user_name,password))
             return redirect(url_for("index"))
     return render_template('login.html', text='')
+
+#--------------------------------------------------------------------------
+@app.route('/logout')
+def logout():
+    # remove the username from the session if it's there
+    session.pop('user_id', None)
+    return redirect(url_for('login'))
     
